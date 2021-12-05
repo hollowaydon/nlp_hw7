@@ -1,0 +1,16 @@
+Zero = "0";
+One = "1";
+Bit = Zero | One;
+Digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
+# Input Language: “a” ( “b”* | “c”+ | “”) “a”
+export Cross = Optimize["a" (("b":"x")* | ("c"+ : "y"*) | ("":"fric")) "a"];
+export BitFlip1 = Optimize[ ((Zero : One)* | (One : Zero)*)* ];
+#[T, Left, Right, Any, Dir, Force]
+export BitFlip2 = CDRewrite[BitFlip1, "", "", Digit*, 'sim', 'obl'];
+export Parity1 = Optimize[ (((Bit*) Zero) : Zero) | (((Bit*) One) : One) ];
+export Parity2 = Reverse[ ((Zero (Bit*)) : Zero) | ((One (Bit*)) : One) ];
+export Parity3 = CDRewrite[ Parity1, "", "[EOS]", Bit*, 'ltr', 'obl' ];
+export UnParity = Invert[Parity3];
+export Split = CDRewrite["":" ", Bit+, Bit+, Bit*, 'sim', 'opt'];
+SplitThreeHelper = Optimize[ ((Bit+ " ") (Bit+ " ") (Bit+)) ];
+export SplitThree = Split @ SplitThreeHelper; # Extra Credit
