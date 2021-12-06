@@ -1,0 +1,4 @@
+import 'arpabet.grm' as arpabet;
+
+arpa = SymbolTable['arpabet.sym'];
+export PronounceArpa = StringFile['./cmudict.txt', byte, arpa]; # change back to data/cmudict.txt

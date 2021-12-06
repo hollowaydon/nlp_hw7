@@ -1,0 +1,13 @@
+import 'arpabet.grm' as arpabet;
+import 'pronouncearpa.grm' as pronouncearpa;
+
+Sigma = (arpabet.Consonant | arpabet.Stressed | arpabet.Unstressed );
+SigmaStar = Optimize[ Sigma* ];
+
+arpa = SymbolTable['arpabet.sym'];
+export RemoveConsonant = arpabet.Consonant : "".arpa;
+StressPattern = CDRewrite[ RemoveConsonant, "".arpa, "".arpa,  SigmaStar, 'sim', 'obl'];
+export DacytlStar = (arpabet.Stressed arpabet.Unstressed arpabet.Unstressed)*;
+
+export Results = Optimize[Project[pronouncearpa.PronounceArpa @ StressPattern @ DacytlStar, 'input']];
+export ListResults = "" : Results;

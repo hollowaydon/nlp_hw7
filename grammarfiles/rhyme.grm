@@ -1,0 +1,16 @@
+import 'arpabet.grm' as arpabet;
+import 'pronouncearpa.grm' as pronouncearpa;
+
+Sigma = (arpabet.Consonant | arpabet.Stressed | arpabet.Unstressed );
+SigmaStar = Optimize[ Sigma* ];
+
+arpa = SymbolTable['arpabet.sym'];
+
+# phoneme rhyming endings
+export Ending = CDRewrite[ (SigmaStar : "".arpa), "".arpa, arpabet.Stressed, SigmaStar, 'rtl', 'obl'];
+
+# word rhyming endings
+export WordEnding = Optimize[ pronouncearpa.PronounceArpa @ Ending ];
+
+# get all Rhyming Words
+export InvWordEnding = Invert[ WordEnding ] ;

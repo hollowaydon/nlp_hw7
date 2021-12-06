@@ -1,0 +1,1 @@
+export Pronounce = StringFile['cmudict.txt'];
