@@ -1,0 +1,26 @@
+import 'byte.grm' as bytelib;   # copy this file from grammars/byte.grm
+Letter = bytelib.kAlpha;        # kAlpha is defined in byte.grm
+Sigma = Letter | "'" | "<" | ">";           # alphabet also includes stress mark
+Vowel = "a" | "e" | "i" | "o" | "u" | "A" | "E" | "I" | "O" | "U";
+Consonant = Letter - Vowel;
+Nucleus = Vowel+;
+
+# YOU WILL FILL IN THE REST
+SigmaStar = Optimize[Sigma*];
+InsertStress = "<" ("" : "'") Nucleus ">" ;
+Right = Optimize[ Consonant+ "<" Nucleus ">" SigmaStar ];
+BracketNucHelper = ("" : "<") "'"? Nucleus ("" : ">");
+export BracketNuc = CDRewrite[BracketNucHelper, (Sigma - Vowel) | "[BOS]", (Sigma - Vowel) | "[EOS]", SigmaStar, 'sim', 'obl' ];
+export BracketRemover = CDRewrite[ ("<" | ">") : "", "", "", SigmaStar, 'sim', 'obl' ];
+Left = Optimize[ ( "<" Nucleus ">" Consonant+ ) | ( "[BOS]" Consonant+ ) | ( "[BOS]" ) ];
+export OneSyllableStress = CDRewrite[ ("" : "'") Nucleus , ("[BOS]" Consonant*) , (Consonant* "[EOS]") , SigmaStar, 'sim', 'obl' ];
+export Stress = Optimize[ BracketNuc @ CDRewrite[InsertStress, Left, Right, SigmaStar, 'ltr', 'obl'] @ BracketRemover @ OneSyllableStress ];
+
+# Inverted Stress
+export InvertStress = Invert[Stress] @ BracketRemover;
+
+
+# Stress Words
+SigmakBytesStar = Optimize[ (Sigma | bytelib.kBytes)* ];
+
+export StressWords = CDRewrite[Stress, ("[BOS]" | " "), ("[EOS]" | " "), SigmakBytesStar, 'sim', 'obl'];
