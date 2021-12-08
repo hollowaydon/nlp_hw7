@@ -1,0 +1,3 @@
+Try to reuse a word across sentences .
+Build a language model .
+look at a sentence in the language model .

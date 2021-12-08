@@ -7,3 +7,30 @@ export Disagreements = Optimize[ (First - Second) | (Second - First) ];
 export Triplets = Optimize[Zero* (One One One+ Zero*)* ];
 export NotPillars = Optimize[Bit* - ( (One One)* )];
 export Oddlets = Optimize[Zero* (One (One One)* Zero+)* (One (One One)* )? Zero*];
+
+# Question 9
+# (b)
+export WFlip = (Zero : ( (Zero <1>) | (One <2>) )) ((Zero : Zero One <0.5>) | (One : Zero <0.4>))+ (One <0.5> );
+
+# (c)
+export WeightedMultipath = (Zero : ( (One <3>) | ("" <0.4>) )) (Zero : ( (One <1.1>) | ("" <1.9>) ));
+
+export WeightedMultipathOpt = Optimize[ WeightedMultipath ];
+
+x = Zero Zero;
+y = One;
+T = WeightedMultipath ;
+export T_out = Project[ WeightedMultipath, 'output' ];
+export xT_out = Project[ x @ WeightedMultipath, 'output' ];
+export Ty_in = Project[ WeightedMultipath @ y, 'input' ];
+export xTy = x @ T @ y ;
+export exTye = ("" : x) @ T @ (y : "");
+
+export xT_out_opt = Optimize[ xT_out ];
+export Ty_in_opt = Optimize[ Ty_in ];
+export exTye_opt = Optimize[ exTye ];
+
+# (d) extra credit - determinizers
+
+export NoDet = WeightedMultipath;
+export Det_fails = Determinize[RmEpsilon[x]];

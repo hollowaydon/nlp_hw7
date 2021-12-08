@@ -1,0 +1,13 @@
+Zero = "0";
+One = "1";
+Bit = Zero | One;
+export First = Optimize[Zero Zero* Bit* One One One One?];
+export Second = Optimize[Zero Bit* One One One];
+export Disagreements = Optimize[ (First - Second) | (Second - First) ];
+export Triplets = Optimize[Zero* (One One One+ Zero*)* ];
+export NotPillars = Optimize[Bit* - ( (One One)* )];
+export Oddlets = Optimize[Zero* (One (One One)* Zero+)* (One (One One)* )? Zero*];
+
+
+export test = (Zero <1>) (Bit+ <0.2>) (One <0.5>);
+export test2 = (Zero : One <1>) (Bit+ <0.2>) (One : One One <0.75>);

@@ -12,5 +12,8 @@ export Ending = CDRewrite[ (SigmaStar : "".arpa), "".arpa, arpabet.Stressed, Sig
 # word rhyming endings
 export WordEnding = Optimize[ pronouncearpa.PronounceArpa @ Ending ];
 
-# get all Rhyming Words
+# Go from rhyming phonemes to words
 export InvWordEnding = Invert[ WordEnding ] ;
+
+# get all Rhyming Words
+# export GetRhymes = rhyme.WordEnding @ Invert[ rhyme.WordEnding ] ;
