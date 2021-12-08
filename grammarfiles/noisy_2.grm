@@ -1,0 +1,9 @@
+import 'noisy.grm' as noisy;
+import 'byte.grm' as bytelib;
+
+vocab = SymbolTable['entrain.sym'];  # load model's symbol table (.sym)
+
+# (e)
+RandomChar = bytelib.kGraph <4.54>;
+export RandomWord = Optimize[(RandomChar (RandomChar <0.1>)* ) <2.3>];
+SpellOOV = "<unk>".vocab : RandomWord;
