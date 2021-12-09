@@ -18,7 +18,7 @@ export DelSpaces = CDRewrite[ " ": "", "", "", ByteSigmaStar, 'sim', 'obl' ];
 RandomChar = bytelib.kGraph <4.54>;
 export RandomWord = Optimize[(RandomChar (RandomChar <0.1>)* ) <2.3>];
 SpellOOV = "<unk>".vocab : RandomWord;
-Spell = ( SpellWithoutOOV <0> | SpellOOV) ;
+Spell = ( (SpellWithoutOOV <0>) | SpellOOV) ;
 
 SpellOOVLiterally = "<unk>".vocab : "<unk>";
 export SpellPrint = (SpellWithoutOOV | SpellOOVLiterally) ;
