@@ -22,10 +22,10 @@ Spell = ( (SpellWithoutOOV <0>) | SpellOOV) ;
 
 SpellOOVLiterally = "<unk>".vocab : "<unk>";
 export SpellPrint = (SpellWithoutOOV | SpellOOVLiterally) ;
-export SpaceKiller = CDRewrite[ " ":"", ("[BOS]" | " "), "", ByteSigmaStar, 'ltr', 'obl' ] ;
+export SpaceKiller = CDRewrite[ " ":"", ("[BOS]" | " "), "", ByteSigmaStar, 'sim', 'obl' ] @ CDRewrite[ " ":"", "", "[EOS]", ByteSigmaStar, 'sim', 'obl' ];
 
 export SpellText = Optimize[ (Spell ("".vocab:" "))* @ SpaceKiller ];
 
-export PrintText = Optimize[ (SpellPrint ("".vocab:" "))* @ SpaceKiller ];
-export Generate = LM @ SpellText @ DelSpaces;
+# export PrintText = Optimize[ (SpellPrint ("".vocab:" "))* @ SpaceKiller ];
+# export Generate = LM @ SpellText @ DelSpaces;
 
