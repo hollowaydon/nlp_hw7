@@ -26,12 +26,11 @@ export SpaceKiller = CDRewrite[ " ":"", ("[BOS]" | " "), "", ByteSigmaStar, 'sim
 
 export SpellText = Optimize[ (Spell ("".vocab:" "))* @ SpaceKiller ];
 
-# export PrintText = Optimize[ (SpellPrint ("".vocab:" "))* @ SpaceKiller ];
-# export Generate = LM @ SpellText @ DelSpaces;
+export PrintText = Optimize[ (SpellPrint ("".vocab:" "))* @ SpaceKiller ];
+export Generate = LM @ SpellText @ DelSpaces;
 
 
 # Question 12
-
 # delete word endings:
 # fellowship -> fellow
 # fallacy -> fall
