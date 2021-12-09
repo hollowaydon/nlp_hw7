@@ -11,12 +11,12 @@ ByteSigmaStar = Optimize[ByteSigma*];
 # Question 10 (f) extra credit
 export LM = LoadFst['entrain.fst'];  # load trigram language model (.fst)
 CWPartial = CDRewrite[( "" : ByteSigmaStar ), "", "[EOS]", ByteSigmaStar, 'sim', 'obl'] @ noisy.InvSpell;
-export CompleteWordInContext = ((noisy.InvSpell (bytelib.kSpace : " ".vocab) )* CWPartial);
+export CompleteWordInContext = ((noisy.InvSpell (bytelib.kSpace : "".vocab) )* CWPartial); #   " ".vocab??
 
 
 
 # Question 11
-export PrintText = Optimize[ (noisy.SpellPrint (" ".vocab:" "))* @ noisy.SpaceKiller ];
+export PrintText = Optimize[ (noisy.SpellPrint ("".vocab:" "))* @ noisy.SpaceKiller ];
 
 export Generate = LM @ noisy.SpellText @ noisy.DelSpaces;
 export InvSpellDel = Invert[ noisy.SpellText @ noisy.DelSpaces ];
