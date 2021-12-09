@@ -2,8 +2,23 @@ import 'noisy.grm' as noisy;
 import 'byte.grm' as bytelib;
 
 vocab = SymbolTable['entrain.sym'];  # load model's symbol table (.sym)
+ByteSigma = (bytelib.kSpace | bytelib.kGraph);  # printable characters
+ByteSigmaStar = Optimize[ByteSigma*];
 
-# (e)
-RandomChar = bytelib.kGraph <4.54>;
-export RandomWord = Optimize[(RandomChar (RandomChar <0.1>)* ) <2.3>];
-SpellOOV = "<unk>".vocab : RandomWord;
+# Extra credit and 2 stage noisy channel model
+# moved to separate file so that noisy.grm doesn't time out autograder
+
+# Question 10 (f) extra credit
+export LM = LoadFst['entrain.fst'];  # load trigram language model (.fst)
+CWPartial = CDRewrite[( "" : ByteSigmaStar ), "", "[EOS]", ByteSigmaStar, 'sim', 'obl'] @ noisy.InvSpell;
+export CompleteWordInContext = ((noisy.InvSpell (bytelib.kSpace : " ".vocab) )* CWPartial);
+
+
+
+# Question 11
+export PrintText = Optimize[ (noisy.SpellPrint (" ".vocab:" "))* @ noisy.SpaceKiller ];
+
+export Generate = LM @ noisy.SpellText @ noisy.DelSpaces;
+export InvSpellDel = Invert[ noisy.SpellText @ noisy.DelSpaces ];
+export InvLM = Invert[ LM ]; # @ PrintText;
+
