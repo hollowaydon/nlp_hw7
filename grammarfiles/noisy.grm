@@ -4,7 +4,7 @@ ByteSigmaStar = Optimize[ByteSigma*];
 
 export LM = LoadFst['./entrain.fst'];  # load trigram language model (.fst)
 vocab = SymbolTable['./entrain.sym'];  # load model's symbol table (.sym)
-SpellWithoutOOV = StringFile['./entrain.alpha', vocab, byte];
+export SpellWithoutOOV = StringFile['./entrain.alpha', vocab, byte];
 
 # YOU WILL FILL IN THE REST
 export InvSpell = StringFile['./entrain.alpha', byte, vocab];
@@ -29,3 +29,17 @@ export SpellText = Optimize[ (Spell ("".vocab:" "))* @ SpaceKiller ];
 # export PrintText = Optimize[ (SpellPrint ("".vocab:" "))* @ SpaceKiller ];
 # export Generate = LM @ SpellText @ DelSpaces;
 
+
+# Question 12
+
+# delete word endings:
+# fellowship -> fellow
+# fallacy -> fall
+
+export SuffDeleter = ("acy" | "al" | "ance" | "ence" | "dom" | "er" | "or" | "ing" | "y" | "ism" | "ment" | "ness" | "ship" | "tion" | "fy" | "ful" | "able" | "ible" | "al" | "less"):"";
+export DelSuffix = CDRewrite[ SuffDeleter, bytelib.kGraph, (" "|"[EOS]"), ByteSigmaStar, 'sim', 'opt' ];
+
+export DelSpacePartial = CDRewrite[ " ": "", "", "", ByteSigmaStar, 'sim', 'opt' ];
+
+export TelephoneHelper = (("a"|"b"|"c"):"2") | (("d"|"e"|"f"):"3") | (("g"|"h"|"i"):"4") | (("j"|"k"|"l"):"5") | (("m"|"n"|"o"):"6") | (("p"|"q"|"r"|"s"):"7") | (("t"|"u"|"v"):"8") | (("w"|"x"|"y"|"z"):"9");
+export Telephone = CDRewrite[ TelephoneHelper, "", "", ByteSigmaStar, 'sim', 'opt' ];

@@ -4,6 +4,7 @@ import 'byte.grm' as bytelib;
 vocab = SymbolTable['entrain.sym'];  # load model's symbol table (.sym)
 ByteSigma = (bytelib.kSpace | bytelib.kGraph);  # printable characters
 ByteSigmaStar = Optimize[ByteSigma*];
+VocabSigma = StringFile['./entrain.alpha', vocab, vocab];
 
 # Extra credit and 2 stage noisy channel model
 # moved to separate file so that noisy.grm doesn't time out autograder
@@ -20,5 +21,21 @@ export PrintText = Optimize[ (noisy.SpellPrint ("".vocab:" "))* @ noisy.SpaceKil
 
 export Generate = LM @ noisy.SpellText @ noisy.DelSpaces;
 export InvSpellDel = Invert[ noisy.SpellText @ noisy.DelSpaces ];
-export InvLM = Invert[ LM ]; # @ PrintText;
+export InvLM = Invert[ LM ]; # @ PrintText # @ invDelSpaces(x);
+
+# Question 12
+export SpellText_12 = Optimize[ (noisy.SpellWithoutOOV ("".vocab:" "))* @ noisy.SpaceKiller ];
+export InvSuffDel = Invert[ SpellText_12 @ noisy.DelSuffix ];
+
+export SuffSpaceDel = Invert[ SpellText_12 @ noisy.DelSuffix @ noisy.DelSpacePartial ];
+
+export InvTelephone = Invert[ SpellText_12 @ noisy.Telephone ];
+
+export InvAll =  Invert[ SpellText_12 @ noisy.DelSuffix @ noisy.DelSpacePartial @ noisy.Telephone ];
+
+export InvAll2 =  Invert[ SpellText_12 @ noisy.DelSpacePartial @ noisy.DelSuffix @ noisy.Telephone ];
+
+export InvAll3 =  Invert[ SpellText_12 @ noisy.Telephone @ noisy.DelSpacePartial @ noisy.DelSuffix ];
+
+export InvAll4 =  Invert[ SpellText_12 @ noisy.Telephone @ noisy.DelSuffix @ noisy.DelSpacePartial ];
 
